@@ -1,26 +1,43 @@
-"use client";
+'use client';
 
-import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import type { Family } from "@/models";
-import { createFamily, deleteFamily, updateFamily } from "@/services/family";
-import { CreateFamilyDialog } from "./create-family-dialog";
-import { DeleteFamilyDialog } from "./delete-family-dialog";
-import { EditFamilyDialog } from "./edit-family-dialog";
-import { FamilyTable } from "./family-table";
+import { Plus } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import type { Family } from '@/models';
+import {
+  createFamily,
+  deleteFamily,
+  getAllFamilies,
+  updateFamily,
+} from '@/services/family';
+import { CreateFamilyDialog } from './create-family-dialog';
+import { DeleteFamilyDialog } from './delete-family-dialog';
+import { EditFamilyDialog } from './edit-family-dialog';
+import { FamilyTable } from './family-table';
 
-interface FamiliesViewProps {
-  initialFamilies: Family[];
-}
-
-export function FamiliesView({ initialFamilies }: FamiliesViewProps) {
-  const router = useRouter();
+export function FamiliesView() {
+  const [families, setFamilies] = useState<Family[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedFamily, setSelectedFamily] = useState<Family | null>(null);
+
+  const fetchFamilies = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const data = await getAllFamilies();
+      setFamilies(data);
+    } catch (error) {
+      console.error('Error fetching families:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchFamilies();
+  }, [fetchFamilies]);
 
   const handleCreate = async (data: { name: string; description: string }) => {
     await createFamily({
@@ -28,7 +45,7 @@ export function FamiliesView({ initialFamilies }: FamiliesViewProps) {
       description: data.description,
       sons: [],
     });
-    router.refresh();
+    await fetchFamilies();
   };
 
   const handleEdit = (family: Family) => {
@@ -38,13 +55,13 @@ export function FamiliesView({ initialFamilies }: FamiliesViewProps) {
 
   const handleEditSubmit = async (
     family: Family,
-    data: { name: string; description: string },
+    data: { name: string; description: string }
   ) => {
     await updateFamily(family.id, {
       name: data.name,
       description: data.description,
     });
-    router.refresh();
+    await fetchFamilies();
   };
 
   const handleDelete = (family: Family) => {
@@ -54,7 +71,7 @@ export function FamiliesView({ initialFamilies }: FamiliesViewProps) {
 
   const handleDeleteConfirm = async (family: Family) => {
     await deleteFamily(family.id);
-    router.refresh();
+    await fetchFamilies();
   };
 
   return (
@@ -72,11 +89,17 @@ export function FamiliesView({ initialFamilies }: FamiliesViewProps) {
         </Button>
       </div>
 
-      <FamilyTable
-        families={initialFamilies}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      {isLoading ? (
+        <div className="flex items-center justify-center py-10">
+          <p className="text-zinc-500">Cargando familias...</p>
+        </div>
+      ) : (
+        <FamilyTable
+          families={families}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      )}
 
       <CreateFamilyDialog
         open={createDialogOpen}
