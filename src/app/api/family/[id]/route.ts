@@ -60,7 +60,6 @@ export async function PUT(request: Request, { params }: Params) {
     if (!bodyValidation.success) {
       return bodyValidation.response;
     }
-
     const { name, sons, description } = bodyValidation.data;
 
     await updateFamilyFb(id, {

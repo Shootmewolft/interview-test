@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import {
   Collapsible,
   CollapsibleContent,
@@ -10,19 +8,15 @@ import {
 } from '@/components/ui/collapsible';
 import { Button } from '@/components/ui/button';
 import type { FamilyNode } from '@/models';
-import {
-  ChevronRight,
-  GripVertical,
-  Pencil,
-  Plus,
-  Trash2,
-  User,
-} from 'lucide-react';
+import { ChevronRight, Eye, Pencil, Plus, Trash2, User } from 'lucide-react';
 import { cn } from '@/utils';
+import Link from 'next/link';
+import { APP_ROUTES } from '@/consts';
 
 interface TreeNodeProps {
   node: FamilyNode;
   depth: number;
+  familyId: string;
   onEdit: (node: FamilyNode) => void;
   onDelete: (node: FamilyNode) => void;
   onAddChild: (parentNode: FamilyNode) => void;
@@ -32,6 +26,7 @@ interface TreeNodeProps {
 export function TreeNode({
   node,
   depth,
+  familyId,
   onEdit,
   onDelete,
   onAddChild,
@@ -40,33 +35,8 @@ export function TreeNode({
   const [isOpen, setIsOpen] = useState(true);
   const hasChildren = node.sons.length > 0;
 
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: node.id,
-    data: {
-      type: 'node',
-      node,
-      depth,
-    },
-  });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={cn('relative', isDragging && 'opacity-50 z-50')}
-    >
+    <div className="relative">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <div
           className={cn(
@@ -76,15 +46,6 @@ export function TreeNode({
           )}
           style={{ marginLeft: depth * 24 }}
         >
-          {/* Drag handle */}
-          <button
-            className="cursor-grab touch-none text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
-            {...attributes}
-            {...listeners}
-          >
-            <GripVertical className="h-4 w-4" />
-          </button>
-
           {/* Expand/Collapse button */}
           {hasChildren ? (
             <CollapsibleTrigger asChild>
@@ -124,6 +85,17 @@ export function TreeNode({
 
           {/* Actions */}
           <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7"
+              asChild
+              title="Ver detalles"
+            >
+              <Link href={APP_ROUTES.SON(familyId, node.id)}>
+                <Eye className="h-3.5 w-3.5" />
+              </Link>
+            </Button>
             <Button
               variant="ghost"
               size="icon"

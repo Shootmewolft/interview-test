@@ -2,8 +2,9 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import { getFamilyFb } from '@/services/firebase';
+import { getFamily } from '@/services/family';
 import { FamilyTreeView } from '@/components/family-tree';
+import { APP_ROUTES } from '@/consts';
 
 interface FamilyPageProps {
   params: Promise<{ familyId: string }>;
@@ -11,7 +12,7 @@ interface FamilyPageProps {
 
 export default async function FamilyPage({ params }: FamilyPageProps) {
   const { familyId } = await params;
-  const family = await getFamilyFb(familyId);
+  const family = await getFamily(familyId);
 
   if (!family) {
     notFound();
@@ -23,7 +24,7 @@ export default async function FamilyPage({ params }: FamilyPageProps) {
         <div className="space-y-6">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon" asChild>
-              <Link href="/">
+              <Link href={APP_ROUTES.HOME}>
                 <ArrowLeft className="h-4 w-4" />
               </Link>
             </Button>

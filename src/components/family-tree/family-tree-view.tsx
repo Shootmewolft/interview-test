@@ -1,21 +1,6 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import {
-  DndContext,
-  DragOverlay,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  type DragStartEvent,
-  type DragEndEvent,
-} from '@dnd-kit/core';
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
 import { Button } from '@/components/ui/button';
 import { TreeNode } from './tree-node';
 import { CreateNodeDialog } from './create-node-dialog';
@@ -32,7 +17,6 @@ import {
   createChildNode,
   updateNode,
   deleteNode,
-  updateFamily,
 } from '@/services/family';
 import { Plus, Users } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -41,6 +25,7 @@ interface FamilyTreeViewProps {
   family: Family;
 }
 
+// TODO: Implement drag-and-drop functionality for reordering nodes
 export function FamilyTreeView({ family }: FamilyTreeViewProps) {
   const router = useRouter();
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -48,118 +33,12 @@ export function FamilyTreeView({ family }: FamilyTreeViewProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedNode, setSelectedNode] = useState<FamilyNode | null>(null);
   const [parentNode, setParentNode] = useState<FamilyNode | null>(null);
-  const [activeNode, setActiveNode] = useState<FamilyNode | null>(null);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
-    useSensor(KeyboardSensor)
-  );
 
   const collectNodeIds = useCallback((nodes: FamilyNode[]): string[] => {
     return nodes.flatMap((node) => [node.id, ...collectNodeIds(node.sons)]);
   }, []);
 
   const allNodeIds = collectNodeIds(family.sons);
-
-  const findNodeById = useCallback(
-    (nodes: FamilyNode[], id: string): FamilyNode | null => {
-      for (const node of nodes) {
-        if (node.id === id) return node;
-        const found = findNodeById(node.sons, id);
-        if (found) return found;
-      }
-      return null;
-    },
-    []
-  );
-
-  const findParentNode = useCallback(
-    (
-      nodes: FamilyNode[],
-      childId: string,
-      parent: FamilyNode | null = null
-    ): FamilyNode | null => {
-      for (const node of nodes) {
-        if (node.id === childId) return parent;
-        const found = findParentNode(node.sons, childId, node);
-        if (found !== undefined) return found;
-      }
-      return null;
-    },
-    []
-  );
-
-  const moveNode = useCallback(
-    (nodes: FamilyNode[], activeId: string, overId: string): FamilyNode[] => {
-      let movedNode: FamilyNode | null = null;
-
-      const removeNode = (nodes: FamilyNode[]): FamilyNode[] => {
-        return nodes.filter((node) => {
-          if (node.id === activeId) {
-            movedNode = node;
-            return false;
-          }
-          node.sons = removeNode(node.sons);
-          return true;
-        });
-      };
-
-      const newNodes = removeNode(JSON.parse(JSON.stringify(nodes)));
-
-      if (!movedNode) return nodes;
-
-      const insertAfter = (nodes: FamilyNode[]): FamilyNode[] => {
-        const result: FamilyNode[] = [];
-        for (const node of nodes) {
-          result.push(node);
-          if (node.id === overId && movedNode) {
-            result.push(movedNode);
-          }
-          node.sons = insertAfter(node.sons);
-        }
-        return result;
-      };
-
-      const overIndex = newNodes.findIndex((n) => n.id === overId);
-      if (overIndex !== -1 && movedNode) {
-        newNodes.splice(overIndex + 1, 0, movedNode);
-        return newNodes;
-      }
-
-      return insertAfter(newNodes);
-    },
-    []
-  );
-
-  const handleDragStart = (event: DragStartEvent) => {
-    const { active } = event;
-    const node = findNodeById(family.sons, active.id as string);
-    setActiveNode(node);
-  };
-
-  const handleDragEnd = async (event: DragEndEvent) => {
-    const { active, over } = event;
-    setActiveNode(null);
-
-    if (!over || active.id === over.id) return;
-
-    const newSons = moveNode(
-      family.sons,
-      active.id as string,
-      over.id as string
-    );
-
-    try {
-      await updateFamily(family.id, { sons: newSons });
-      router.refresh();
-    } catch (error) {
-      console.error('Error moving node:', error);
-    }
-  };
 
   const handleAddRoot = () => {
     setParentNode(null);
@@ -206,6 +85,7 @@ export function FamilyTreeView({ family }: FamilyTreeViewProps) {
         key={node.id}
         node={node}
         depth={depth}
+        familyId={family.id}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onAddChild={handleAddChild}
@@ -244,27 +124,7 @@ export function FamilyTreeView({ family }: FamilyTreeViewProps) {
           </Button>
         </div>
       ) : (
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext
-            items={allNodeIds}
-            strategy={verticalListSortingStrategy}
-          >
-            <div className="space-y-2">{renderNodes(family.sons, 0)}</div>
-          </SortableContext>
-
-          <DragOverlay>
-            {activeNode && (
-              <div className="rounded-lg border bg-white p-3 shadow-lg dark:bg-zinc-900 opacity-90">
-                <span className="font-medium">{activeNode.name}</span>
-              </div>
-            )}
-          </DragOverlay>
-        </DndContext>
+        <div className="space-y-2">{renderNodes(family.sons, 0)}</div>
       )}
 
       <CreateNodeDialog
