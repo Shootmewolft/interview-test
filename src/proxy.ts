@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 const allowedOrigins = [
   'http://localhost:3000',
   'https://sandbox.shootmewolft.com',
+  'https://shootmewolft.com',
 ];
 
 const corsOptions = {
