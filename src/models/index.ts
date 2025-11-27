@@ -6,5 +6,7 @@ export type {
   UpdateFamilyInput,
   CreateNodeInput,
   UpdateNodeInput,
+  CreateFamily,
+  UpdateFamily,
 } from './family';
 export type { ApiResponse, CreateResponse, MessageResponse } from './api';

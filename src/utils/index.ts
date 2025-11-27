@@ -4,5 +4,6 @@ export {
   deleteNodeById,
   findNodeById,
   updateNodeById,
+  countSons,
 } from './nodes';
 export { parseJsonBody, validateSchema } from './api';

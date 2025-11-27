@@ -27,5 +27,7 @@ export interface CustomField {
 export type FamilyInput = Omit<Family, 'id' | 'createdAt'>;
 export type UpdateFamilyInput = Partial<FamilyInput>;
 
+export type CreateFamily = Omit<Family, 'id' | 'sons' | 'createdAt'>;
+export type UpdateFamily = Partial<CreateFamily>;
 export type CreateNodeInput = Omit<FamilyNode, 'id' | 'sons' | 'createdAt'>;
 export type UpdateNodeInput = Partial<CreateNodeInput>;

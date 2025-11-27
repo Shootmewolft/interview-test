@@ -101,6 +101,7 @@ export async function parseJsonBody<T>(
 ): Promise<ValidationResult<T>> {
   try {
     const body = await request.json();
+    console.log(body);
     return validateSchema(schema, body);
   } catch (error) {
     if (error instanceof SyntaxError) {
