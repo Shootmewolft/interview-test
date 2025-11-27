@@ -1,4 +1,4 @@
-import type { FamilyNode } from '@/models';
+import type { FamilyNode } from "@/models";
 
 /**
  * Busca un nodo por su ID dentro de un árbol de nodos de forma recursiva.
@@ -13,7 +13,7 @@ import type { FamilyNode } from '@/models';
  */
 export function findNodeById(
   nodes: FamilyNode[],
-  nodeId: string
+  nodeId: string,
 ): FamilyNode | null {
   for (const node of nodes) {
     if (node.id === nodeId) return node;
@@ -38,7 +38,7 @@ export function findNodeById(
 export function updateNodeById(
   nodes: FamilyNode[],
   nodeId: string,
-  updates: Partial<FamilyNode>
+  updates: Partial<FamilyNode>,
 ): FamilyNode[] {
   return nodes.map((node) => {
     if (node.id === nodeId) {
@@ -65,7 +65,7 @@ export function updateNodeById(
  */
 export function deleteNodeById(
   nodes: FamilyNode[],
-  nodeId: string
+  nodeId: string,
 ): FamilyNode[] {
   return nodes
     .filter((node) => node.id !== nodeId)
@@ -89,7 +89,7 @@ export function deleteNodeById(
 export function addChildToNode(
   nodes: FamilyNode[],
   parentId: string,
-  newChild: FamilyNode
+  newChild: FamilyNode,
 ): FamilyNode[] {
   return nodes.map((node) => {
     if (node.id === parentId) {

@@ -1,15 +1,15 @@
-import { PutError, type PutErrorInstance } from '@/errors';
+import { PutError, type PutErrorInstance } from "@/errors";
 
 export async function put<TResponse, TBody = unknown>(
   url: string,
   body?: TBody,
-  options?: RequestInit
+  options?: RequestInit,
 ): Promise<TResponse | PutErrorInstance> {
   try {
     const response = await fetch(url, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...options?.headers,
       },
       body: JSON.stringify(body ? body : {}),
@@ -18,14 +18,14 @@ export async function put<TResponse, TBody = unknown>(
 
     if (!response.ok) {
       return new PutError(
-        `Error Fetching (PUT): ${response.status} ${response.statusText}`
+        `Error Fetching (PUT): ${response.status} ${response.statusText}`,
       );
     }
 
     const json: TResponse = await response.json();
     return json;
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
+    const message = error instanceof Error ? error.message : "Unknown error";
     return new PutError(message);
   }
 }

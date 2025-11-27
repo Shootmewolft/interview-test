@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,10 +9,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface CreateFamilyDialogProps {
   open: boolean;
@@ -24,8 +24,8 @@ export function CreateFamilyDialog({
   onOpenChange,
   onSubmit,
 }: CreateFamilyDialogProps) {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,8 +35,8 @@ export function CreateFamilyDialog({
     setIsLoading(true);
     try {
       await onSubmit({ name: name.trim(), description: description.trim() });
-      setName('');
-      setDescription('');
+      setName("");
+      setDescription("");
       onOpenChange(false);
     } finally {
       setIsLoading(false);
@@ -45,8 +45,8 @@ export function CreateFamilyDialog({
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
-      setName('');
-      setDescription('');
+      setName("");
+      setDescription("");
     }
     onOpenChange(open);
   };
@@ -95,7 +95,7 @@ export function CreateFamilyDialog({
               Cancelar
             </Button>
             <Button type="submit" disabled={isLoading || !name.trim()}>
-              {isLoading ? 'Creando...' : 'Crear familia'}
+              {isLoading ? "Creando..." : "Crear familia"}
             </Button>
           </DialogFooter>
         </form>

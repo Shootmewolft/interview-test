@@ -1,21 +1,21 @@
 import {
-  collection,
-  doc,
   addDoc,
-  updateDoc,
+  collection,
   deleteDoc,
+  doc,
   getDoc,
   getDocs,
   serverTimestamp,
-} from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+  updateDoc,
+} from "firebase/firestore";
+import { COLLECTION_NAME } from "@/consts";
+import { db } from "@/lib/firebase";
 import type {
   Family,
   FamilyInput,
   FamilyNode,
   UpdateFamilyInput,
-} from '@/models';
-import { COLLECTION_NAME } from '@/consts';
+} from "@/models";
 
 function serializeNode(node: FamilyNode): FamilyNode {
   const { createdAt, birthdate, sons, ...rest } = node as FamilyNode & {
@@ -26,13 +26,13 @@ function serializeNode(node: FamilyNode): FamilyNode {
   return {
     ...rest,
     createdAt:
-      typeof createdAt === 'object' && 'toDate' in createdAt && createdAt.toDate
+      typeof createdAt === "object" && "toDate" in createdAt && createdAt.toDate
         ? createdAt.toDate()
-        : (createdAt as Date) ?? new Date(),
+        : ((createdAt as Date) ?? new Date()),
     birthdate:
-      typeof birthdate === 'object' && 'toDate' in birthdate && birthdate.toDate
+      typeof birthdate === "object" && "toDate" in birthdate && birthdate.toDate
         ? birthdate.toDate()
-        : (birthdate as Date) ?? new Date(),
+        : ((birthdate as Date) ?? new Date()),
     sons: sons?.map(serializeNode) ?? [],
   };
 }
@@ -47,9 +47,9 @@ function serializeFamily(id: string, data: Record<string, unknown>): Family {
   return {
     id,
     createdAt:
-      typeof createdAt === 'object' && 'toDate' in createdAt && createdAt.toDate
+      typeof createdAt === "object" && "toDate" in createdAt && createdAt.toDate
         ? createdAt.toDate()
-        : (createdAt as Date) ?? new Date(),
+        : ((createdAt as Date) ?? new Date()),
     sons: sons?.map(serializeNode) ?? [],
     ...rest,
   } as Family;
@@ -60,7 +60,7 @@ export async function createFamilyFb(family: FamilyInput): Promise<string> {
   const docRef = await addDoc(collection(db, COLLECTION_NAME), {
     name,
     sons,
-    description: description ?? '',
+    description: description ?? "",
     createdAt: serverTimestamp(),
   });
   return docRef.id;
@@ -68,7 +68,7 @@ export async function createFamilyFb(family: FamilyInput): Promise<string> {
 
 export async function updateFamilyFb(
   id: string,
-  data: UpdateFamilyInput
+  data: UpdateFamilyInput,
 ): Promise<void> {
   const docRef = doc(db, COLLECTION_NAME, id);
   await updateDoc(docRef, data);

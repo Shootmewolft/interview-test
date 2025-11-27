@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { ChevronRight, Eye, Pencil, Plus, Trash2, User } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '@/components/ui/collapsible';
-import { Button } from '@/components/ui/button';
-import type { FamilyNode } from '@/models';
-import { ChevronRight, Eye, Pencil, Plus, Trash2, User } from 'lucide-react';
-import { cn } from '@/utils';
-import Link from 'next/link';
-import { APP_ROUTES } from '@/consts';
+} from "@/components/ui/collapsible";
+import { APP_ROUTES } from "@/consts";
+import type { FamilyNode } from "@/models";
+import { cn } from "@/utils";
 
 interface TreeNodeProps {
   node: FamilyNode;
@@ -40,9 +40,9 @@ export function TreeNode({
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <div
           className={cn(
-            'group flex items-center gap-2 rounded-lg border bg-white p-3 dark:bg-zinc-900',
-            'hover:border-zinc-300 dark:hover:border-zinc-700',
-            'transition-colors'
+            "group flex items-center gap-2 rounded-lg border bg-white p-3 dark:bg-zinc-900",
+            "hover:border-zinc-300 dark:hover:border-zinc-700",
+            "transition-colors",
           )}
           style={{ marginLeft: depth * 24 }}
         >
@@ -52,8 +52,8 @@ export function TreeNode({
               <Button variant="ghost" size="icon" className="h-6 w-6">
                 <ChevronRight
                   className={cn(
-                    'h-4 w-4 transition-transform',
-                    isOpen && 'rotate-90'
+                    "h-4 w-4 transition-transform",
+                    isOpen && "rotate-90",
                   )}
                 />
               </Button>

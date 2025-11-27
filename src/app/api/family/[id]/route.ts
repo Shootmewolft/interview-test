@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+import { IdParamSchema, PutFamilySchema } from "@/schemas";
 import {
+  deleteFamilyFb,
   getFamilyFb,
   updateFamilyFb,
-  deleteFamilyFb,
-} from '@/services/firebase';
-import { IdParamSchema, PutFamilySchema } from '@/schemas';
-import { validateSchema, parseJsonBody } from '@/utils';
+} from "@/services/firebase";
+import { parseJsonBody, validateSchema } from "@/utils";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -23,16 +23,16 @@ export async function GET(_request: Request, { params }: Params) {
     if (!family) {
       return NextResponse.json(
         { error: `No se encontró la familia con id: ${id}` },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     return NextResponse.json({ data: family }, { status: 200 });
   } catch (error) {
-    console.error('Error fetching family:', error);
+    console.error("Error fetching family:", error);
     return NextResponse.json(
-      { error: 'Error al obtener la familia' },
-      { status: 500 }
+      { error: "Error al obtener la familia" },
+      { status: 500 },
     );
   }
 }
@@ -51,7 +51,7 @@ export async function PUT(request: Request, { params }: Params) {
     if (!existingFamily) {
       return NextResponse.json(
         { error: `No se encontró la familia con id: ${id}` },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -69,14 +69,14 @@ export async function PUT(request: Request, { params }: Params) {
     });
 
     return NextResponse.json(
-      { message: 'Familia actualizada exitosamente' },
-      { status: 200 }
+      { message: "Familia actualizada exitosamente" },
+      { status: 200 },
     );
   } catch (error) {
-    console.error('Error updating family:', error);
+    console.error("Error updating family:", error);
     return NextResponse.json(
-      { error: 'Error al actualizar la familia' },
-      { status: 500 }
+      { error: "Error al actualizar la familia" },
+      { status: 500 },
     );
   }
 }
@@ -95,21 +95,21 @@ export async function DELETE(_request: Request, { params }: Params) {
     if (!existingFamily) {
       return NextResponse.json(
         { error: `No se encontró la familia con id: ${id}` },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     await deleteFamilyFb(id);
 
     return NextResponse.json(
-      { message: 'Familia eliminada exitosamente' },
-      { status: 200 }
+      { message: "Familia eliminada exitosamente" },
+      { status: 200 },
     );
   } catch (error) {
-    console.error('Error deleting family:', error);
+    console.error("Error deleting family:", error);
     return NextResponse.json(
-      { error: 'Error al eliminar la familia' },
-      { status: 500 }
+      { error: "Error al eliminar la familia" },
+      { status: 500 },
     );
   }
 }

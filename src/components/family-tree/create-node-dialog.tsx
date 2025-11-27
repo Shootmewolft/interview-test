@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +9,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import type { CreateNodeInput } from '@/models';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { CreateNodeInput } from "@/models";
 
 interface CreateNodeDialogProps {
   open: boolean;
@@ -27,10 +27,10 @@ export function CreateNodeDialog({
   onSubmit,
   parentName,
 }: CreateNodeDialogProps) {
-  const [name, setName] = useState('');
-  const [dni, setDni] = useState('');
-  const [description, setDescription] = useState('');
-  const [birthdate, setBirthdate] = useState('');
+  const [name, setName] = useState("");
+  const [dni, setDni] = useState("");
+  const [description, setDescription] = useState("");
+  const [birthdate, setBirthdate] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -53,10 +53,10 @@ export function CreateNodeDialog({
   };
 
   const resetForm = () => {
-    setName('');
-    setDni('');
-    setDescription('');
-    setBirthdate('');
+    setName("");
+    setDni("");
+    setDescription("");
+    setBirthdate("");
   };
 
   const handleOpenChange = (open: boolean) => {
@@ -70,12 +70,12 @@ export function CreateNodeDialog({
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>
-              {parentName ? `Agregar hijo de ${parentName}` : 'Agregar miembro'}
+              {parentName ? `Agregar hijo de ${parentName}` : "Agregar miembro"}
             </DialogTitle>
             <DialogDescription>
               {parentName
                 ? `Este miembro será hijo de ${parentName}`
-                : 'Agrega el primer miembro de la familia'}
+                : "Agrega el primer miembro de la familia"}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -137,7 +137,7 @@ export function CreateNodeDialog({
               type="submit"
               disabled={isLoading || !name.trim() || !dni || !birthdate}
             >
-              {isLoading ? 'Agregando...' : 'Agregar'}
+              {isLoading ? "Agregando..." : "Agregar"}
             </Button>
           </DialogFooter>
         </form>

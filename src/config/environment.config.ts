@@ -1,4 +1,4 @@
-import { FirebaseEnvironmentMissing } from '@/errors';
+import { FirebaseEnvironmentMissing } from "@/errors";
 
 const {
   NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -20,7 +20,7 @@ if (
   !NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 ) {
   throw new FirebaseEnvironmentMissing(
-    'Missing Firebase configuration in environment variables'
+    "Missing Firebase configuration in environment variables",
   );
 }
 

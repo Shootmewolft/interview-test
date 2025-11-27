@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { FamilyTable } from './family-table';
-import { CreateFamilyDialog } from './create-family-dialog';
-import { EditFamilyDialog } from './edit-family-dialog';
-import { DeleteFamilyDialog } from './delete-family-dialog';
-import { createFamily, updateFamily, deleteFamily } from '@/services/family';
-import type { Family } from '@/models';
-import { Plus } from 'lucide-react';
+import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import type { Family } from "@/models";
+import { createFamily, deleteFamily, updateFamily } from "@/services/family";
+import { CreateFamilyDialog } from "./create-family-dialog";
+import { DeleteFamilyDialog } from "./delete-family-dialog";
+import { EditFamilyDialog } from "./edit-family-dialog";
+import { FamilyTable } from "./family-table";
 
 interface FamiliesViewProps {
   initialFamilies: Family[];
@@ -38,7 +38,7 @@ export function FamiliesView({ initialFamilies }: FamiliesViewProps) {
 
   const handleEditSubmit = async (
     family: Family,
-    data: { name: string; description: string }
+    data: { name: string; description: string },
   ) => {
     await updateFamily(family.id, {
       name: data.name,

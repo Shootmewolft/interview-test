@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
-import { getFamilyFb, updateFamilyFb } from '@/services/firebase';
-import { CreateNodeSchema } from '@/schemas';
-import { parseJsonBody } from '@/utils/api';
-import type { FamilyNode } from '@/models';
+import { NextResponse } from "next/server";
+import type { FamilyNode } from "@/models";
+import { CreateNodeSchema } from "@/schemas";
+import { getFamilyFb, updateFamilyFb } from "@/services/firebase";
+import { parseJsonBody } from "@/utils/api";
 
 type Params = { params: Promise<{ familyId: string }> };
 
@@ -12,8 +12,8 @@ export async function POST(request: Request, { params }: Params) {
 
     if (!familyId) {
       return NextResponse.json(
-        { error: 'Parámetro familyId es requerido' },
-        { status: 400 }
+        { error: "Parámetro familyId es requerido" },
+        { status: 400 },
       );
     }
 
@@ -22,7 +22,7 @@ export async function POST(request: Request, { params }: Params) {
     if (!family) {
       return NextResponse.json(
         { error: `No se encontró la familia con id: ${familyId}` },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -46,14 +46,14 @@ export async function POST(request: Request, { params }: Params) {
     await updateFamilyFb(familyId, { sons: updatedSons });
 
     return NextResponse.json(
-      { message: 'Nodo creado exitosamente', id: newNode.id },
-      { status: 201 }
+      { message: "Nodo creado exitosamente", id: newNode.id },
+      { status: 201 },
     );
   } catch (error) {
-    console.error('Error creating node:', error);
+    console.error("Error creating node:", error);
     return NextResponse.json(
-      { error: 'Error al crear el nodo' },
-      { status: 500 }
+      { error: "Error al crear el nodo" },
+      { status: 500 },
     );
   }
 }
@@ -64,8 +64,8 @@ export async function GET(_request: Request, { params }: Params) {
 
     if (!familyId) {
       return NextResponse.json(
-        { error: 'Parámetro familyId es requerido' },
-        { status: 400 }
+        { error: "Parámetro familyId es requerido" },
+        { status: 400 },
       );
     }
 
@@ -74,16 +74,16 @@ export async function GET(_request: Request, { params }: Params) {
     if (!family) {
       return NextResponse.json(
         { error: `No se encontró la familia con id: ${familyId}` },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     return NextResponse.json({ data: family.sons }, { status: 200 });
   } catch (error) {
-    console.error('Error fetching sons:', error);
+    console.error("Error fetching sons:", error);
     return NextResponse.json(
-      { error: 'Error al obtener los hijos' },
-      { status: 500 }
+      { error: "Error al obtener los hijos" },
+      { status: 500 },
     );
   }
 }

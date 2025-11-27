@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,9 +9,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import type { Family } from '@/models';
+} from "@/components/ui/dialog";
+import type { Family } from "@/models";
 
 interface DeleteFamilyDialogProps {
   family: Family | null;
@@ -45,7 +45,7 @@ export function DeleteFamilyDialog({
         <DialogHeader>
           <DialogTitle>Eliminar familia</DialogTitle>
           <DialogDescription>
-            ¿Estás seguro de que deseas eliminar la familia{' '}
+            ¿Estás seguro de que deseas eliminar la familia{" "}
             <span className="font-semibold text-zinc-900 dark:text-zinc-100">
               {family?.name}
             </span>
@@ -68,7 +68,7 @@ export function DeleteFamilyDialog({
             onClick={handleConfirm}
             disabled={isLoading}
           >
-            {isLoading ? 'Eliminando...' : 'Eliminar'}
+            {isLoading ? "Eliminando..." : "Eliminar"}
           </Button>
         </DialogFooter>
       </DialogContent>

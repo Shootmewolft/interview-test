@@ -19,15 +19,15 @@ export interface FamilyNode {
 
 export interface CustomField {
   id: string;
-  type: 'text' | 'color' | 'range' | 'date';
+  type: "text" | "color" | "range" | "date";
   label: string;
   value: string;
 }
 
-export type FamilyInput = Omit<Family, 'id' | 'createdAt'>;
+export type FamilyInput = Omit<Family, "id" | "createdAt">;
 export type UpdateFamilyInput = Partial<FamilyInput>;
 
-export type CreateFamily = Omit<Family, 'id' | 'sons' | 'createdAt'>;
+export type CreateFamily = Omit<Family, "id" | "sons" | "createdAt">;
 export type UpdateFamily = Partial<CreateFamily>;
-export type CreateNodeInput = Omit<FamilyNode, 'id' | 'sons' | 'createdAt'>;
+export type CreateNodeInput = Omit<FamilyNode, "id" | "sons" | "createdAt">;
 export type UpdateNodeInput = Partial<CreateNodeInput>;

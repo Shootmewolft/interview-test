@@ -1,5 +1,5 @@
-import { FamiliesView } from '@/components/families';
-import { getAllFamilies } from '@/services/family';
+import { FamiliesView } from "@/components/families";
+import { getAllFamilies } from "@/services/family";
 
 export default async function Home() {
   const families = await getAllFamilies();

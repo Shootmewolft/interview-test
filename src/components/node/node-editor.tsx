@@ -1,18 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { ArrowLeft, Plus, Trash2, User } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -20,11 +13,18 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import type { Family, FamilyNode, CustomField } from '@/models';
-import { updateNode } from '@/services/family';
-import { ArrowLeft, Plus, Trash2, User } from 'lucide-react';
-import { toast } from 'sonner';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import type { CustomField, Family, FamilyNode } from "@/models";
+import { updateNode } from "@/services/family";
 
 interface NodeEditorProps {
   family: Family;
@@ -37,15 +37,15 @@ export function NodeEditor({ family, node }: NodeEditorProps) {
   const [addFieldDialogOpen, setAddFieldDialogOpen] = useState(false);
   const [name, setName] = useState(node.name);
   const [dni, setDni] = useState(String(node.dni));
-  const [description, setDescription] = useState(node.description || '');
+  const [description, setDescription] = useState(node.description || "");
   const [birthdate, setBirthdate] = useState(
-    new Date(node.birthdate).toISOString().split('T')[0]
+    new Date(node.birthdate).toISOString().split("T")[0],
   );
   const [customFields, setCustomFields] = useState<CustomField[]>(
-    node.customFields || []
+    node.customFields || [],
   );
-  const [newFieldLabel, setNewFieldLabel] = useState('');
-  const [newFieldType, setNewFieldType] = useState<CustomField['type']>('text');
+  const [newFieldLabel, setNewFieldLabel] = useState("");
+  const [newFieldType, setNewFieldType] = useState<CustomField["type"]>("text");
 
   const handleSave = async () => {
     setIsLoading(true);
@@ -57,11 +57,11 @@ export function NodeEditor({ family, node }: NodeEditorProps) {
         birthdate: new Date(birthdate),
         customFields: customFields.length > 0 ? customFields : undefined,
       });
-      toast.success('Cambios guardados correctamente');
+      toast.success("Cambios guardados correctamente");
       router.refresh();
     } catch (error) {
-      console.error('Error updating node:', error);
-      toast.error('Error al guardar los cambios');
+      console.error("Error updating node:", error);
+      toast.error("Error al guardar los cambios");
     } finally {
       setIsLoading(false);
     }
@@ -74,18 +74,18 @@ export function NodeEditor({ family, node }: NodeEditorProps) {
       id: crypto.randomUUID(),
       label: newFieldLabel.trim(),
       type: newFieldType,
-      value: newFieldType === 'color' ? '#000000' : '',
+      value: newFieldType === "color" ? "#000000" : "",
     };
 
     setCustomFields([...customFields, newField]);
-    setNewFieldLabel('');
-    setNewFieldType('text');
+    setNewFieldLabel("");
+    setNewFieldType("text");
     setAddFieldDialogOpen(false);
   };
 
   const handleUpdateField = (fieldId: string, value: string) => {
     setCustomFields(
-      customFields.map((f) => (f.id === fieldId ? { ...f, value } : f))
+      customFields.map((f) => (f.id === fieldId ? { ...f, value } : f)),
     );
   };
 
@@ -95,12 +95,12 @@ export function NodeEditor({ family, node }: NodeEditorProps) {
 
   const renderFieldInput = (field: CustomField) => {
     switch (field.type) {
-      case 'color':
+      case "color":
         return (
           <div className="flex gap-2">
             <Input
               type="color"
-              value={field.value || '#000000'}
+              value={field.value || "#000000"}
               onChange={(e) => handleUpdateField(field.id, e.target.value)}
               className="w-14 h-10 p-1 cursor-pointer"
             />
@@ -113,7 +113,7 @@ export function NodeEditor({ family, node }: NodeEditorProps) {
             />
           </div>
         );
-      case 'date':
+      case "date":
         return (
           <Input
             type="date"
@@ -121,19 +121,19 @@ export function NodeEditor({ family, node }: NodeEditorProps) {
             onChange={(e) => handleUpdateField(field.id, e.target.value)}
           />
         );
-      case 'range':
+      case "range":
         return (
           <div className="flex items-center gap-3">
             <Input
               type="range"
               min="0"
               max="100"
-              value={field.value || '50'}
+              value={field.value || "50"}
               onChange={(e) => handleUpdateField(field.id, e.target.value)}
               className="flex-1"
             />
             <span className="text-sm font-medium w-10 text-center">
-              {field.value || '50'}
+              {field.value || "50"}
             </span>
           </div>
         );
@@ -171,7 +171,7 @@ export function NodeEditor({ family, node }: NodeEditorProps) {
               </div>
             </div>
             <Button onClick={handleSave} disabled={isLoading}>
-              {isLoading ? 'Guardando...' : 'Guardar cambios'}
+              {isLoading ? "Guardando..." : "Guardar cambios"}
             </Button>
           </div>
 
@@ -325,7 +325,7 @@ export function NodeEditor({ family, node }: NodeEditorProps) {
               <Label htmlFor="field-type">Tipo de campo</Label>
               <Select
                 value={newFieldType}
-                onValueChange={(v) => setNewFieldType(v as CustomField['type'])}
+                onValueChange={(v) => setNewFieldType(v as CustomField["type"])}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecciona un tipo" />

@@ -1,10 +1,10 @@
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
-import { getFamily } from '@/services/family';
-import { FamilyTreeView } from '@/components/family-tree';
-import { APP_ROUTES } from '@/consts';
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { FamilyTreeView } from "@/components/family-tree";
+import { Button } from "@/components/ui/button";
+import { APP_ROUTES } from "@/consts";
+import { getFamily } from "@/services/family";
 
 interface FamilyPageProps {
   params: Promise<{ familyId: string }>;

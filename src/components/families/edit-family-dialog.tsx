@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +9,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import type { Family } from '@/models';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { Family } from "@/models";
 
 interface EditFamilyDialogProps {
   family: Family | null;
@@ -20,7 +20,7 @@ interface EditFamilyDialogProps {
   onOpenChange: (open: boolean) => void;
   onSubmit: (
     family: Family,
-    data: { name: string; description: string }
+    data: { name: string; description: string },
   ) => Promise<void>;
 }
 
@@ -30,14 +30,14 @@ export function EditFamilyDialog({
   onOpenChange,
   onSubmit,
 }: EditFamilyDialogProps) {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (family) {
       setName(family.name);
-      setDescription(family.description || '');
+      setDescription(family.description || "");
     }
   }, [family]);
 
@@ -59,8 +59,8 @@ export function EditFamilyDialog({
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
-      setName('');
-      setDescription('');
+      setName("");
+      setDescription("");
     }
     onOpenChange(open);
   };
@@ -108,7 +108,7 @@ export function EditFamilyDialog({
               Cancelar
             </Button>
             <Button type="submit" disabled={isLoading || !name.trim()}>
-              {isLoading ? 'Guardando...' : 'Guardar cambios'}
+              {isLoading ? "Guardando..." : "Guardar cambios"}
             </Button>
           </DialogFooter>
         </form>

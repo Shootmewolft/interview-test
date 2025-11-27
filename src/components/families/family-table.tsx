@@ -1,5 +1,8 @@
-'use client';
+"use client";
 
+import { Eye, Pencil, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -7,13 +10,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import type { Family } from '@/models';
-import { Eye, Pencil, Trash2 } from 'lucide-react';
-import Link from 'next/link';
-import { countSons } from '@/utils';
-import { APP_ROUTES } from '@/consts';
+} from "@/components/ui/table";
+import { APP_ROUTES } from "@/consts";
+import type { Family } from "@/models";
+import { countSons } from "@/utils";
 
 interface FamilyTableProps {
   families: Family[];
@@ -52,13 +52,13 @@ export function FamilyTable({ families, onEdit, onDelete }: FamilyTableProps) {
             <TableRow key={family.id}>
               <TableCell className="font-medium">{family.name}</TableCell>
               <TableCell className="text-zinc-500 dark:text-zinc-400">
-                {family.description || '—'}
+                {family.description || "—"}
               </TableCell>
               <TableCell className="text-center">
                 {countSons(family.sons)}
               </TableCell>
               <TableCell className="text-center text-zinc-500 dark:text-zinc-400">
-                {new Date(family.createdAt).toLocaleDateString('es-ES')}
+                {new Date(family.createdAt).toLocaleDateString("es-ES")}
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-1">

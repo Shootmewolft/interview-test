@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import * as v from 'valibot';
+import { NextResponse } from "next/server";
+import * as v from "valibot";
 
 /**
  * Resultado de una operación de validación.
@@ -42,13 +42,13 @@ interface ValidationIssue {
  */
 export function validateSchema<T>(
   schema: v.GenericSchema<T>,
-  data: unknown
+  data: unknown,
 ): ValidationResult<T> {
   const result = v.safeParse(schema, data);
 
   if (!result.success) {
     const issues: ValidationIssue[] = result.issues.map((issue) => ({
-      path: issue.path?.map((p) => p.key).join('.') ?? 'root',
+      path: issue.path?.map((p) => p.key).join(".") ?? "root",
       message: issue.message,
     }));
 
@@ -56,10 +56,10 @@ export function validateSchema<T>(
       success: false,
       response: NextResponse.json(
         {
-          error: 'Error de validación',
+          error: "Error de validación",
           details: issues,
         },
-        { status: 400 }
+        { status: 400 },
       ),
     };
   }
@@ -97,7 +97,7 @@ export function validateSchema<T>(
  */
 export async function parseJsonBody<T>(
   request: Request,
-  schema: v.GenericSchema<T>
+  schema: v.GenericSchema<T>,
 ): Promise<ValidationResult<T>> {
   try {
     const body = await request.json();
@@ -107,8 +107,8 @@ export async function parseJsonBody<T>(
       return {
         success: false,
         response: NextResponse.json(
-          { error: 'El cuerpo de la petición no es un JSON válido' },
-          { status: 400 }
+          { error: "El cuerpo de la petición no es un JSON válido" },
+          { status: 400 },
         ),
       };
     }

@@ -1,5 +1,5 @@
 export const APP_ROUTES = {
-  HOME: '/',
+  HOME: "/",
   FAMILY: (id: string) => `/${id}`,
   SON: (familyId: string, sonId: string) => `/${familyId}/${sonId}`,
 };

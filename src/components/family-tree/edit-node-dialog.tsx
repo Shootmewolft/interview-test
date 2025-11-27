@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +9,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import type { FamilyNode, UpdateNodeInput } from '@/models';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { FamilyNode, UpdateNodeInput } from "@/models";
 
 interface EditNodeDialogProps {
   node: FamilyNode | null;
@@ -27,19 +27,19 @@ export function EditNodeDialog({
   onOpenChange,
   onSubmit,
 }: EditNodeDialogProps) {
-  const [name, setName] = useState('');
-  const [dni, setDni] = useState('');
-  const [description, setDescription] = useState('');
-  const [birthdate, setBirthdate] = useState('');
+  const [name, setName] = useState("");
+  const [dni, setDni] = useState("");
+  const [description, setDescription] = useState("");
+  const [birthdate, setBirthdate] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (node) {
       setName(node.name);
       setDni(String(node.dni));
-      setDescription(node.description || '');
+      setDescription(node.description || "");
       const date = new Date(node.birthdate);
-      setBirthdate(date.toISOString().split('T')[0]);
+      setBirthdate(date.toISOString().split("T")[0]);
     }
   }, [node]);
 
@@ -136,7 +136,7 @@ export function EditNodeDialog({
               type="submit"
               disabled={isLoading || !name.trim() || !dni || !birthdate}
             >
-              {isLoading ? 'Guardando...' : 'Guardar'}
+              {isLoading ? "Guardando..." : "Guardar"}
             </Button>
           </DialogFooter>
         </form>

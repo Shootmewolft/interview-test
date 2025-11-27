@@ -1,7 +1,7 @@
-import { notFound } from 'next/navigation';
-import { getFamilyFb } from '@/services/firebase';
-import { findNodeById } from '@/utils';
-import { NodeEditor } from '@/components/node';
+import { notFound } from "next/navigation";
+import { NodeEditor } from "@/components/node";
+import { getFamilyFb } from "@/services/firebase";
+import { findNodeById } from "@/utils";
 
 interface NodePageProps {
   params: Promise<{ familyId: string; sonId: string }>;

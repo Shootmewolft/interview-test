@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,9 +9,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import type { FamilyNode } from '@/models';
+} from "@/components/ui/dialog";
+import type { FamilyNode } from "@/models";
 
 interface DeleteNodeDialogProps {
   node: FamilyNode | null;
@@ -47,7 +47,7 @@ export function DeleteNodeDialog({
         <DialogHeader>
           <DialogTitle>Eliminar miembro</DialogTitle>
           <DialogDescription>
-            ¿Estás seguro de que deseas eliminar a{' '}
+            ¿Estás seguro de que deseas eliminar a{" "}
             <span className="font-semibold text-zinc-900 dark:text-zinc-100">
               {node?.name}
             </span>
@@ -75,7 +75,7 @@ export function DeleteNodeDialog({
             onClick={handleConfirm}
             disabled={isLoading}
           >
-            {isLoading ? 'Eliminando...' : 'Eliminar'}
+            {isLoading ? "Eliminando..." : "Eliminar"}
           </Button>
         </DialogFooter>
       </DialogContent>
